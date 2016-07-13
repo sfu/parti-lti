@@ -1,0 +1,25 @@
+<%
+   @title = 'Make a Submission'
+   @show_back_link = false if @submission.participant.student?
+%>
+
+<%= stylesheet_link_tag 'submission_form' %>
+
+<%= form_for @submission, :url => room_submissions_path, :html => { :multipart => true } do |f| %>
+    <div id="preview"><%= image_tag @submission.image, id: 'image_preview' %></div>
+    <div><%= f.file_field :image , id: 'select_image', :required => true %></div>
+    <div class="actions">
+        <%= f.submit 'Submit', data: { confirm: 'Are you sure you want to submit this image?' } %>
+    </div>
+<% end %>
+
+<%= javascript_include_tag 'submission_form' %>
+
+<% if @last_submission %>
+    <div id="last_submission">
+      <hr />
+      <h3>Your last submission</h3>
+      <p>If you upload another image, it will replace this submission.</p>
+      <div><%= image_tag @last_submission.image(:medium) %></div>
+    </div>
+<% end %>

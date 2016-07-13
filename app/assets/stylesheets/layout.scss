@@ -1,0 +1,61 @@
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+// This makes sure form fields do not trigger auto-zoom on mobile.
+input, textarea, select {
+  font-size: 1em;
+}
+
+// Top navigation bar
+#top {
+  padding: 0.5em;
+  position: relative;
+  background: #F0F0F0;
+  border: 1px solid #CCC;
+  border-width: 1px 0;
+
+  .top-link {
+    position: absolute;
+  }
+
+  #top-back {
+    left: 0;
+  }
+
+  #top-secondary {
+    right: 0;
+  }
+
+  #top-title {
+    margin: 0 auto;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 1em;
+    text-align: center;
+    text-overflow: ellipsis;
+  }
+
+  a {
+    padding: 0.5em;
+    font-weight: lighter;
+
+    &:link, &:visited {
+      text-decoration: none;
+    }
+
+    &:hover, &:active, &:focus {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Main content section
+#main {
+  padding: 0.5em;
+}

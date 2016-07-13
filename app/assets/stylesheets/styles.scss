@@ -1,0 +1,173 @@
+@import 'config';
+
+html {
+  font-family: $font-family;
+  text-align: left;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1 {
+  margin: 1em 0 0.35em;
+  font-size: 2.5em;
+  font-weight: normal;
+}
+
+h2 {
+  margin: 1em 0 0.25em;
+  font-size: 1.75em;
+}
+
+h3 {
+  margin: 1em 0 0.15em;
+  font-size: 1em;
+}
+
+p {
+  font-size: 1em;
+  line-height: 1.35em;
+  max-width: 33em;
+}
+
+a {
+  color: $color-primary;
+
+  &:hover, &:focus, &:hover {
+    color: $color-focus;
+    text-decoration: none;
+  }
+}
+
+a.button, div.button, #main .nav a,
+input[type='submit'], div.actions button {
+  display: inline-block;
+  margin: 0.25em 0.25em 0 0;
+  padding: 0.5em 0.7em;
+  background: $color-primary;
+  -webkit-transition: background-color 0.35s ease-out;
+  transition: background-color 0.35s ease-out;
+  font-size: 1em;
+  color: white;
+  text-decoration: none;
+
+  &:not(:disabled) {
+    &:hover, &:focus {
+      background-color: $color-focus;
+    }
+  }
+
+  &:disabled, &.disabled {
+    background: #EEE;
+    color: #888;
+  }
+
+  &.processing {
+    background: $color-processing;
+    color: white;
+    -webkit-animation: pulse 0.85s linear 0s infinite alternate;
+    animation: pulse 0.85s linear 0s infinite alternate;
+  }
+}
+
+input[type='submit'], div.actions button {
+  width: 100%;
+  padding: 0.5em 0;
+
+  // override built-in styles
+  border: none;
+  border-radius: 0;
+  -webkit-appearance: none;
+  font-family: $font-family;
+  font-weight: normal;
+}
+
+table {
+  margin: 1em 0;
+  padding: 0;
+}
+
+th {
+  font-size: 1em;
+  text-align: left;
+  background-color: #EEE;
+}
+
+th, td {
+  margin: 0 0.25em 0 0;
+  padding: 0.25em 1em 0.1em 0.25em;
+}
+
+hr {
+  margin: 1.5em 0;
+  border: none;
+  border-top: 0.1em solid #CCC;
+  width: 90%;
+}
+
+form {
+
+  dt {
+    margin-bottom: 0.25em;
+    font-weight: bold;
+  }
+
+  dd {
+    margin: 0 0 1.5em 0;
+  }
+
+}
+
+.flash, .status {
+  padding: 0.5em;
+  background: #EEE;
+  border-left: 0.4em solid $color-primary;
+
+  &.alert {
+    border-left-color: $color-alert;
+  }
+}
+
+.actions {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+#main {
+
+  ul.nav {
+    margin: 0.75em 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+    }
+  }
+
+}
+
+@-webkit-keyframes pulse {
+  0% { background-color: $color-primary; }
+  100% { background-color: $color-processing; }
+}
+
+@keyframes pulse {
+  0% { background-color: $color-primary; }
+  100% { background-color: $color-processing; }
+}
+
+@media (min-width: $breakpoint-narrow) {
+
+  input[type="submit"], div.actions button {
+    width: auto;
+    padding: 0.5em 1em;
+  }
+
+  #main .nav {
+    overflow: auto;
+
+    a {
+      float: left;
+      margin: 0.25em 1em 0.25em 0;
+    }
+  }
+
+}

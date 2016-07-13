@@ -1,0 +1,33 @@
+<%
+   @title = @room.name
+%>
+
+<%= stylesheet_link_tag 'room_editor' %>
+
+<% if @participant %>
+    <%= form_for @room do |f| %>
+        <div>
+          <%= f.label :name, 'Room name' %>: <%= f.text_field :name %>
+          <%= f.submit 'Rename', id: 'edit_room_submit' %>
+        </div>
+        <div>
+          You are a <strong><%= @participant.role.downcase %></strong>.
+          This room is <%= f.select :open, options_for_select([['open', true], ['closed', false]], @room.open) %>.
+        </div>
+    <% end %>
+
+    <% if @participant.teacher? || @participant.moderator? %>
+        <ul class="nav">
+          <li><%= link_to 'Display submissions', view_submissions_path(@room), target: '_blank' %></li>
+          <li><%= link_to 'Moderate submissions', room_submissions_path(@room), target: '_blank' %></li>
+          <li><%= link_to 'Gradebook', room_participants_path(@room) %></li>
+        </ul>
+        <hr />
+        <ul class="nav">
+          <li><%= link_to 'List participants', room_who_submitted_path(@room) %></li>
+          <li><%= link_to 'Make a submission', new_room_submission_path(@room) %></li>
+        </ul>
+    <% end %>
+<% end %>
+
+<%= javascript_include_tag 'room_editor' %>

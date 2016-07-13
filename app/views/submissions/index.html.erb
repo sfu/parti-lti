@@ -1,0 +1,1202 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.5.0/fabric.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/superagent/1.2.0/superagent.min.js"></script>
+<script src="https://fgnass.github.io/spin.js/spin.min.js" ></script>
+
+<style>
+
+*,*::after,*::before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+
+canvas {height:auto;width:auto;max-width:100%;margin:0}
+
+.canvas-tools {
+  position:relative;
+  bottom:0px;
+  text-transform:lowercase;
+  font-variant:small-caps;
+  font-size:1rem;
+  margin-top:0;
+  margin-bottom:0;
+  z-index:9999;
+  -webkit-transition:bottom 0.5s ease-out, left 0.5s ease-out;
+  transition:bottom 0.5s ease-out, left 0.5s ease-out
+}
+
+@media (min-width: 400px){.canvas-tools{left:0px;}
+
+h1.reset {
+  margin-left:7px;
+  position: static;
+  top: auto;
+  right: auto;
+  font-size: 2em;
+  font-weight: normal;
+  z-index: auto;
+  color: inherit;
+}
+
+@media (max-width: 400px){
+  .canvas-tools{bottom:0}
+  .canvas-tools .upload,.canvas-tools a.edit,.canvas-tools a.clear{margin-left:0;padding-top:0.375em;font-size:0.9em}
+}
+
+.canvas-container { margin: auto;}
+</style>
+
+
+<style type="text/css">
+
+      #spinner-wrapper1 {
+        background-color: black;
+        opacity: 1;
+        position: absolute;
+        left:50%;
+        top:50%;
+        width: 100px;
+        height: 100px;
+        margin: -50px 0 0 -50px;
+        border-radius: 10px;
+      }
+
+      /* 
+        Parti Stylesheet - Aug 2015v1
+        Care of Andrew Leung, Brian Hermkens, Andrew Hawryshkewich
+
+        Below you will find the styling for the Parti system along with some
+        samples of the rendered elements.
+      */
+      *, *::after, *::before {
+        box-sizing: border-box;
+      }
+
+      html {
+        font-family: Verdana, Arial, sans-serif;
+        text-align: left;
+      }
+
+      h1 {
+        margin: 1em 0 0.35em;
+        font-size: 2.5em;
+        font-weight: normal;
+      }
+
+      h2 {
+        margin: 1em 0 0.25em;
+        font-size: 1.75em;
+      }
+
+      h3 {
+        margin: 1em 0 0.15em;
+        font-size: 1em;
+      }
+
+      a {
+        color: #34A5A6;
+      }
+
+
+      a:hover, a:focus, a.hover {
+        color: #153C6B;
+        text-decoration: none;
+      }
+
+      a.button, div.button {
+        display: inline-block;
+        font-size: 1em;
+        margin: 0.25em 0.25em 0 0;
+        padding: 0.5em 0.7em;
+        color: white;
+        background: #34A5A6;
+        text-decoration: none;
+        -webkit-transition: background-color 0.35s ease-out;
+        transition: background-color 0.35s ease-out;
+      }
+
+      div.oldrating {
+        display: inline-block;
+        font-size: 1em;
+        height: 2.5em;
+        margin: 0.25em 0.25em 0.25em 0;
+        padding: 0.5em 0.7em;
+        color: white;
+        background: #34A5A6;
+        text-decoration: none;
+        -webkit-transition: background-color 0.35s ease-out;
+        transition: background-color 0.35s ease-out;
+        float: left;
+      }      
+
+      a.button:hover, a.button:focus, div.button:hover, div.button:focus, .rating-bar:hover, .rating-bar:focus {
+        background-color: #153C6B;
+      }
+
+      a.button.processing {
+        background: #B24A95;
+        -webkit-animation-name: pulse;
+        -webkit-animation-duration: 0.85s;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-easing: linear;
+        -webkit-animation-direction: alternate;
+        animation-name: pulse;
+        animation-duration: 0.85s;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+      }
+
+      a.button.inactive {
+        background: #EEE;
+        color: #888;
+      }
+
+      a.button.icon, div.button.icon {
+        padding: 0.1em 0.25em 0;
+      }
+
+      a.button.icon img {
+        height: 2.5em;
+        width: 2.5em;
+      }
+
+      a.button .arrow {
+        font-size: 0.8em;
+        position: relative;
+        top: -0.1em;
+        margin-left: 0.5em;
+      }
+
+      a.button.text-control {
+        height: 2.8em;
+        padding: 0.7em 0.9em;
+      }
+
+      ul.links {
+        list-style-type: none;
+        margin: 0.75em 0;
+        padding: 0;
+      }
+
+      p {
+        font-size: 1em;
+        line-height: 1.35em;
+        max-width: 33em;
+      }
+
+      select {
+        font-size: 1em;
+      }
+
+      hr {
+        margin: 1.5em 0;
+        border: none;
+        border-top: 0.1em solid #CCC;
+        width: 90%;
+      }
+
+      table {
+        margin: 1em 0;
+        padding: 0;
+      }
+
+      th {
+        font-size: 1em;
+        text-align: left;
+        background-color: #EEE;
+      }
+
+      th, td {
+        margin: 0 0.25em 0 0;
+        padding: 0.25em 1em 0.1em 0.25em;
+      }
+
+      .status {
+        padding: 0.5em;
+        background: #EEE;
+        border-left: 0.4em solid #34A5A6;
+      }
+
+      .status.error {
+        border-left-color: #D93D2F;
+      }
+
+      .rating-bar {
+        background-color: #34A5A6;
+        display: inline-block;
+        padding: 0.1em 0.25em 0;
+        margin: 0.25em 0.25em 0 0;
+        -webkit-transition: background-color 0.35s ease-out;
+        transition: background-color 0.35s ease-out;
+      }
+
+      .rating-zero {
+        white-space: nowrap;
+        display: inline-block;
+        width: 2.5em;
+        height: 2.5em;
+        padding-top: 0.1em;
+        overflow: hidden;
+        position: relative;
+        background: 
+          url('/submissions/rating-zero-mask.svg');
+        background-size: contain;
+      }
+
+      .rating-zero i {
+        opacity: 0;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+        background: 
+          url('/submissions/rating-zero.svg');  
+        background-size: contain;
+        /* #FB7C00 */
+      }
+
+      .rating {
+        white-space: nowrap;
+        display: inline-block;
+        width: 10em;
+        height: 2.5em;
+        overflow: hidden;
+        position: relative;
+        right: 0;
+        background: url('/submissions/rating-mask.svg');
+        background-size: contain;
+      }
+
+      .rating i {
+        opacity: 0;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 25%;
+        z-index: 1;
+        background: 
+          url('/submissions/rating.svg');  
+        background-size: contain;
+        /**/
+      }
+
+      .rating input, .rating-zero input, .toggle input { 
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        opacity: 0;
+        display: inline-block;
+        width: 25%;
+        height: 100%; 
+        margin: 0;
+        padding: 0;
+        z-index: 2;
+        position: relative;
+        -webkit-transition: opacity 0.35s ease-out;
+        transition: opacity 0.35s ease-out;
+      }
+
+      .rating-zero input, .toggle input {
+        width: 100%;
+      }
+
+      .rating input:hover, .rating input:focus, .rating-zero input:hover, .rating-zero input:focus, .toggle input:hover, .toggle input:focus {
+        cursor: pointer;
+        background-image: none;
+      }
+
+      .rating input:hover+i, .rating input:checked+i, .rating-zero input:hover+i, .rating-zero input:checked+i, .toggle input:hover+i, .toggle input:checked+i {
+        opacity: 1;
+      }
+
+      .rating i~i {
+        width: 50%;
+      }
+
+      .rating i~i~i {
+        width: 75%;
+      }
+    
+      .rating i~i~i~i {
+        width: 100%;
+      }
+
+      .toggle {
+        white-space: nowrap;
+        display: inline-block;
+        width: 2.5em;
+        height: 2.5em;
+        overflow: hidden;
+        position: relative;
+        right: 0;
+        background-size: contain;
+      }
+
+      .toggle i {
+        opacity: 0;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+        background-size: contain;
+      }
+
+      .toggle.flag {
+        background-image: url('/submissions/flag-mask.svg');
+      }
+
+      .toggle.flag i {
+        background-image: url('/submissions/flag.svg');
+      }
+      
+      .toggle.star {
+        background-image: url('/submissions/star-mask.svg');
+      }
+
+      .toggle.star i {
+        background-image: url('/submissions/star.svg');
+      }
+
+      .toggle.visibility input:checked+i {
+        opacity: 1;
+        background-image: url('/submissions/eye-open.svg');
+      }
+
+      .toggle.visibility input:not(:checked)+i {
+        opacity: 1;
+        background-image: url('/submissions/eye-closed.svg');
+      }
+
+      .ui .button, .ui .rating-bar {
+        float: left;
+      }
+
+      .ui .sibling {
+        margin-right: 0;
+      }
+
+      .ui .spacer {
+        margin-right: 1em;
+      }
+
+      .ui::after {
+        content: " ";
+        display: block;
+        clear: both;
+      }
+
+      @-webkit-keyframes pulse {
+        0% { background-color: #34A5A6; }
+        100% { background-color: #EF52AC; }
+      }
+
+      @keyframes pulse {
+        0% { background-color: #34A5A6; }
+        100% { background-color: #EF52AC; }
+      }
+    </style>
+<%
+  # This is meant to be a standalone page that opens in a new window
+  @show_top_nav = false
+
+  # Remove multiple submissions from the list.
+  # ensure no participant has multiple submissions
+  uniq_hash = {}
+  @room.submissions.each do |s|
+    if uniq_hash[s.participant_id].nil?
+      uniq_hash[s.participant_id] = s
+    else
+      if s.created_at > uniq_hash[s.participant_id].created_at
+        uniq_hash[s.participant_id] = s
+      end
+    end
+  end
+
+  submissions = []
+  uniq_hash.each do |k,v|
+    submissions << v
+  end
+
+  # Bump starred submissions to the head of the list and surround them with a green border.
+  # Starred submissions appear first, sorted by submitter id.
+  sorted_submissions = submissions
+
+  # Guard against no pics selected for display.
+  firstUrl = ""
+  if sorted_submissions.count > 0
+    firstUrl = sorted_submissions[0].image.url(:medium)
+  end
+%>
+<!-- =================================================================================== -->
+
+<div id="cc1" style="width: 100%; text-align: center;">
+<div id="container1" style="margin: auto;">
+  <canvas id="c1"></canvas>      
+  <div class="canvas-tools">
+      <div class="ui">
+     
+          <div style="padding:15px;float:left;">
+            <label for="listtype" >Queue:</label>
+            <select id="listtype" defaultValue="unrated" onChange="onListChange(this);">
+              <option value="unrated">Unrated</option>
+              <option value="rated">Rated</option>
+            </select>
+          </div>
+
+          <a href="#" class="button text-control sibling" onclick="prevImage();">&lt;&lt;</a>
+          <a href="#" class="button text-control" onclick="nextImage();">&gt;&gt;</a>
+
+          <div class="button icon">
+            <span class="toggle visibility">
+              <input id="show" type="checkbox" name="visible" onChange="onShow(this);"><i></i>
+            </span>
+          </div>
+
+          <div class="button icon">
+            <span class="toggle star">
+              <input id="starred" type="checkbox" name="star" onChange="onStar(this);"><i></i>
+            </span>
+          </div>
+
+          <div class="button icon">
+            <span class="toggle flag">
+              <input id="flagged" type="checkbox" name="flag" onChange="onFlag(this);"><i></i>
+            </span>
+          </div>
+
+          <% if @room.max_rating == 4 %>
+          <div class="rating-bar spacer">
+            <span class="rating-zero">
+              <input id="rating0" type="radio" name="rate" value="0" onClick="onRatingChange(this);"><i></i>
+            </span>
+            <span class="rating">
+              <input id="rating1" type="radio" name="rate" value="1" onClick="onRatingChange(this);"><i></i>
+              <input id="rating2" type="radio" name="rate" value="2" onClick="onRatingChange(this);"><i></i>
+              <input id="rating3" type="radio" name="rate" value="3" onClick="onRatingChange(this);"><i></i>
+              <input id="rating4" type="radio" name="rate" value="4" onClick="onRatingChange(this);"><i></i>
+            </span>
+          </div>
+          <% else %>
+           <div class="oldrating" style="height:44.5983px;">
+           <label for="oldrating">Rating:</label>
+           <select id="oldrating" onChange="onRatingChange(this);">
+            <option value="-1">unrated</option>
+            <% (0..@room.max_rating).each do |x| %>
+              <option value="<%= x %>"><%= x %></option>
+            <% end %>
+           </select>
+           </div>
+          <% end %>
+          <!-- rotate ccw -->
+          <a href="#" class="button icon sibling" onClick="onRotateCCW();">
+            <img src="/submissions/rotate-left.svg" alt="Rotate left">
+          </a>
+          <!-- rotate cw -->
+          <a href="#" class="button icon" onClick="onRotateCW();">
+            <img src="/submissions/rotate-right.svg" alt="Rotate right">
+          </a>
+          <!-- zoom in -->
+          <a href="#" class="button icon sibling" onClick="onZoomIn();">
+            <img src="/submissions/zoom-in.svg" alt="Zoom in">
+          </a>
+          <!-- zoom out -->
+          <a href="#" class="button icon" onClick="onZoomOut();">
+            <img src="/submissions/zoom-out.svg" alt="Zoom out">
+          </a>
+        </div>
+      <div id="marquee" style="padding-top: 4px; margin-bottom: 0px; border: 1px solid black; height:228px; overflow-x:scroll; white-space:nowrap;">
+      </div>
+  </div>
+</div>
+</div> <!-- cc1 -->
+
+<!-- =================================================================================== -->
+
+<script>
+
+var highestSubmissionId = 0;
+var roomId = <%= @room.id %>;
+var oldRatingSystem = <%= @room.max_rating != 4 %>; // flag: we using the new rating system (0-4) or old rating system (0-n)?
+
+var magnifyMode = false;
+
+function onZoomIn() {
+  if (currList.length === 0) {
+    return;
+  }
+  c1.onMagnify();
+}
+
+function onZoomOut() {
+  if (currList.length === 0) {
+    return;
+  }
+  c1.onDeMagnify();
+}
+
+function onRotateCCW() {
+  if (currList.length === 0) {
+    return;
+  }
+  c1.onSliderRotateCCW();
+}
+
+function onRotateCW() {
+  if (currList.length === 0) {
+    return;
+  }
+  c1.onSliderRotateCW();
+}
+
+// Periodically poll the server for new submissions.
+// And then update the various lists.
+function downloadSubmissions() {
+  
+  superagent.get("/rooms/" + roomId + "/submissions/beyond/" + highestSubmissionId)
+    .set('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content') )
+    .end(function(err,res) {
+        if (res == null) {
+          console.log("Error getting new submissions.");
+          console.log("null result from network call.");
+          return;
+        }
+
+        if (res.status != 200) {
+          console.log("Error getting new submissions.");
+          console.log("Status: " + res.xhr.status + " : " + res.xhr.statusText);
+          return;
+        }
+
+        prevHighestSubmissionId = highestSubmissionId;
+
+        // Process the list and add the elements to either the rated or unrated lists.
+        var subs = res.body;
+        for(i=0;i<subs.length;i++) {
+          sub = subs[i];
+          
+          newsub = {
+            id: sub.id,
+            url: sub.url,
+            thumb: sub.thumb,
+            show: sub.show,
+            star: sub.star,
+            flag: sub.flag,
+            rating: sub.rating,
+            participant_id: sub.participant_id
+          };
+
+          highestSubmissionId = highestSubmissionId > newsub.id ? highestSubmissionId : newsub.id;
+
+          // Remove any existing submissions from the same user.
+          for(j=rated.length-1;j>=0;j--) {
+            if (rated[j].participant_id === newsub.participant_id) {
+              rated.splice(j, 1);
+            }
+          }
+          for(j=unrated.length-1;j>=0;j--) {
+            if (unrated[j].participant_id === newsub.participant_id) {
+              unrated.splice(j, 1);
+            }
+          }
+
+          // Add the new submission to the appropriate list.
+          if (newsub.rating > -1) {
+            rated.push(newsub);
+          }
+          else {
+            unrated.push(newsub);
+          }
+        }
+
+        showList(prevHighestSubmissionId);
+
+        // somehow, preserve current image the user is viewing in the midst of an update...
+        
+        if (typeof firstTime === "undefined") {
+          selectImage(0);
+          firstTime = false;
+        }
+    });  
+}
+
+rated = [];
+unrated = [];
+currList = unrated;
+currentIndex = 0;
+currentSubmission = null;
+prevSubmission = null;
+
+function prevImage() {
+  if (currentIndex - 1 >= 0) {
+    selectImage(currentIndex - 1);
+  }
+}
+
+function nextImage() {
+  if (currentIndex + 1 < currList.length) {
+    selectImage(currentIndex + 1);
+  }
+}
+
+function updateSubmission(submissionId, propname, newvalue) {
+    hash = {};
+    hash[propname] = newvalue;
+    
+    superagent.patch("/rooms/" + roomId + "/submissions/" + submissionId)
+    .set('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content') )
+    .send(hash)
+    .end(function(err,res) {    
+        if (res.status != 200) {
+          console.log("Error updating submission: " + submissionId);
+          console.log("Status: " + res.xhr.status + " : " + res.xhr.statusText);
+        }
+      }
+    );
+}
+
+function onListChange(elem) {
+  if (elem.value === "unrated") {
+    currList = unrated;
+  }
+  else {
+    currList = rated;
+  }
+
+  c1.currentImage = null;
+  c1.canvas.backgroundImage = 0;
+  c1.canvas.clear();
+  
+  showList();
+  selectImage(0);
+}
+
+function onShow(elem) {
+  if (currList.length === 0) {
+    return;
+  }
+  updateSubmission(currentSubmission.id, "show", elem.checked);
+  currentSubmission.show = elem.checked;
+}
+
+function onStar(elem) {
+  if (currList.length === 0) {
+    return;
+  }
+  updateSubmission(currentSubmission.id, "starred", elem.checked);
+  currentSubmission.star = elem.checked;
+}
+
+function onFlag(elem) {
+  if (currList.length === 0) {
+    return;
+  }
+  updateSubmission(currentSubmission.id, "flagged", elem.checked);
+  currentSubmission.flag = elem.checked;
+}
+
+function onRatingChange(elem) {
+  if (currList.length === 0) {
+    return;
+  }
+  newRating = parseInt(elem.value);
+  oldRating = currentSubmission.rating;
+
+  if (!oldRatingSystem) {
+    if (newRating === oldRating) {
+      // Special case. Clicking on the same rating will "unrate" the submission.
+      newRating = -1;
+    }
+  }
+
+  updateSubmission(currentSubmission.id, "rating", newRating);
+  currentSubmission.rating = newRating;  
+
+  // Move the elem to another list if needed and then refresh the list.
+  if (oldRating === -1 && newRating > -1) {
+    var index = unrated.indexOf(currentSubmission);
+    unrated.splice(index, 1);
+    rated.push(currentSubmission);
+    showList();
+  }
+  else if (oldRating > -1 && newRating === -1) {    
+    var index = rated.indexOf(currentSubmission);
+    rated.splice(index,1);
+    unrated.push(currentSubmission);
+    showList();
+  }
+
+  // Adjust the current selection in the list.
+  if(currentIndex < currList.length) {
+    selectImage(currentIndex);
+  }
+  else if (currentIndex - 1 >= 0) {
+    selectImage(currentIndex - 1);
+  }
+  else {
+    // empty list? don't call selectImage() but do clear the canvas.
+    c1.currentImage = null;
+    c1.canvas.backgroundImage = 0;
+    c1.canvas.clear();
+  }
+}
+
+function highlightSelected() {
+  if (currList.length === 0) {
+    clearControls();
+    return;
+  }
+  if (prevSubmission !== null) {
+    $('#img' + prevSubmission.id).css('outline', 'none');
+  }
+  if (currentSubmission !== null) {
+    $('#img' + currentSubmission.id).css('outline', '3px dotted black');
+  }
+}
+
+function clearControls() {
+    $('#show')[0].checked = false;
+    $('#starred')[0].checked = false;
+    $('#flagged')[0].checked = false;
+    
+    // clear rating system.
+    if (oldRatingSystem) {
+      $('#oldrating')[0].value = -1;
+    }
+    else {
+      for(var i=0;i<5;i++) {
+        $('#rating' + i)[0].checked = false;
+      }
+    }
+}
+
+// load image from the marquee
+function selectImage(index) {
+  if (currList.length === 0) {
+    clearControls();
+    return;
+  }
+  prevSubmission = currentSubmission;
+  currentSubmission = currList[index];// either rated or unrated list.  
+  currentIndex = index;
+
+  c1.loadImage(currentSubmission.url);
+  // set the attributes on display
+  $('#show')[0].checked = currentSubmission.show;
+  $('#starred')[0].checked = currentSubmission.star;
+  $('#flagged')[0].checked = currentSubmission.flag;
+  
+  if (oldRatingSystem) {
+    $('#oldrating')[0].value = currentSubmission.rating;
+  }
+  else {
+    if (currentSubmission.rating > -1) {
+      var elem = $('#rating' + currentSubmission.rating)[0];
+      elem.checked = true;
+    }
+    else {
+      for(var j=0;j<5;j++) {
+        $('#rating' + j)[0].checked = false;
+      }
+    }
+  }
+
+  // highlight the selection in the marquee
+  highlightSelected();
+}
+
+// if startId is supplied then only add elements greater than it
+// otherwise display the entire list
+function showList(startId) {
+  marquee = $('#marquee');
+
+  if (typeof startId === "undefined") {
+    // do some diffing here and only append the new items in the list
+    marquee.empty();
+    for(i=0;i<currList.length;i++) {
+      marquee.append("<span style='display:inline-block; height:204px'><img id='img" + currList[i].id + "' src='" + currList[i].thumb + "' onClick='selectImage(" + i + ");' style='height:inherit; margin:auto;' /></span>");
+    }
+  }
+  else {
+    var minId = parseInt(startId);
+    for(i=0;i<currList.length;i++) {
+      if (currList[i].id > minId) {
+        marquee.append("<span style='display:inline-block; height:204px'><img id='img" + currList[i].id + "' src='" + currList[i].thumb + "' onClick='selectImage(" + i + ");' style='height:inherit; margin:auto;' /></span>");
+      }
+    }    
+  }
+ 
+  highlightSelected();
+}
+
+// Global vars.
+
+// Notes: 
+// 15 = padding to compensate for margin from main div tag.
+// 189 + 16 = canvas tools div
+// Rest = ?
+//
+// Adjusting this adjusts the space between the marquee bottom and the page bottom.
+var ControlsH = (2*21.44 + 15) + (198 + 16 + 10);
+
+<!-- =================================================================================== -->
+
+//
+// Class EnhancedCanvas
+// wraps the Fabric JS object and Carousel UI.
+//
+
+//
+// Constructor function.
+//
+function EnhancedCanvas(canvasid, w, h, magnifyid, rotateid, containerid, spinnerid) {
+  var self = this;
+  self.spinnerid = spinnerid;
+
+  // set available area:
+  // used for special case when loading a new image that best
+  // fits a space and thus allow the re-allocation of a larger canvas.
+  this.setAvail(w, h);
+
+  this.currentImage = null;
+  
+  // canvas object
+  this.canvas = new fabric.Canvas(canvasid, {
+    isDrawingMode: true
+  });
+  this.canvas.setWidth(w);
+  this.canvas.setHeight(h);
+  this.canvas.freeDrawingBrush.color = "#FFFF00";
+  this.canvas.freeDrawingBrush.width = 4;
+  this.canvas.isDrawingMode = false;
+  this.canvas.selection = false;
+
+  this.magnifyRange = $('#' + magnifyid);
+  this.rotateRange = $('#' + rotateid);
+
+  $('#' + containerid + ' > div.canvas-container').append("<div id='overlay-" + self.spinnerid + "'><div id='" + self.spinnerid + "'></div></div>");
+  $('#overlay-' + self.spinnerid).hide();
+
+  this.canvas.on('mouse:down', function(options) {
+    self.mouseX = options.e.clientX;
+    self.mouseY = options.e.clientY;
+    self.mouseDown = true;
+  });
+
+  this.canvas.on('mouse:up', function(options) {
+    self.mouseDown = false;
+   });
+
+  this.canvas.on('mouse:move', function(options) {
+    if (!self.mouseDown) {
+      return;
+    }
+
+    if (!self.magnifyMode) {
+      return;
+    }
+
+    deltaX = options.e.clientX - self.mouseX;
+    self.mouseX = options.e.clientX;
+    deltaY = options.e.clientY - self.mouseY;
+    self.mouseY = options.e.clientY;
+
+    // Move around magnified image.
+    self.currentImage.set({left: self.currentImage.left + deltaX, top: self.currentImage.top + deltaY});
+    self.canvas.setBackgroundImage(self.currentImage, self.canvas.renderAll.bind(self.canvas));
+  });
+}
+
+EnhancedCanvas.prototype.setAvail = function (w,h) {
+  this.availW = w;
+  this.availH = h;
+}
+
+//
+// Handle a resize event. W and H of new size is passed in.
+//
+EnhancedCanvas.prototype.resize = function (nw, nh) {  
+  // just resize the canvas to fit this size
+  // then readd the img back with a proper scale to fit.
+
+  var img = this.currentImage;
+  var canvas = this.canvas;
+
+  canvas.backgroundImage = 0; // remove background image, see http://stackoverflow.com/questions/14171378/fabricjs-delete-backgroundimage
+  canvas.clear();
+
+  canvas.setWidth(nw);
+  canvas.setHeight(nh);
+
+  if (img === null) {
+    console.log("No current image.");
+    return;
+  }
+
+  if (img.angle === 90 || img.angle === 270) {
+    this.resizeImageFlipped();
+  }
+  else {
+    this.resizeImage();
+  }
+
+  canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+};
+
+//
+// Load image into canvas.
+// A click in the carousel loads a new image into the main view.
+// Along with the new image we want to resize the canvas to fit 
+// in the available space and then resize the newly loaded image
+// to fit in that space.
+//
+EnhancedCanvas.prototype.loadImage = function (imageUrl) {
+  var canvas = this.canvas;
+  var self = this; // to use in callback below where this === window
+  
+  var target = document.getElementById(self.spinnerid);
+  var spinner = new Spinner({lines: 12, color: "#fff"}).spin(target);
+  $('#overlay-' + self.spinnerid).show();
+
+  canvas.clear();
+  // reset the controls
+  self.magnifyRange.val(1);
+  self.rotateRange.val(0);
+
+  fabric.Image.fromURL(imageUrl, function(img) {// download image
+    
+    // Note: if the user changes the current queue in the middle of downloading then there
+    // is a state where the image is displayed even if there we are now in a queue where
+    // there are no elements. This is harmless. The fix may be even more dangerous.
+
+    spinner.stop();
+    $('#overlay-' + self.spinnerid).hide();
+
+    img.centeredRotation = true;
+    img.originX = "center";
+    img.originY = "center";
+    img.scale = 1
+
+    self.currentImage = img;
+    self.currentImageAngle = 0;
+    // Save the origin width and height before call to resizeImage().
+    // We save the original width and height of the image
+    // because when the image is resized that information on the object is changed.
+    self.imgw = img.width;
+    self.imgh = img.height;
+    self.resizeImage();
+
+    canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+  });
+};
+
+//
+// Resize/relocated image according to current canvas size.
+//
+EnhancedCanvas.prototype.resizeImage = function () {
+    var canvas = this.canvas;
+    var img = this.currentImage;
+
+    // set image as background of canvas
+    // scale to fit
+    var ow = this.imgw;
+    var oh = this.imgh;
+
+    var nh = canvas.height;
+    var nw = nh/oh * ow;
+    if (nw > canvas.width) {
+      nw = canvas.width;
+      nh = nw/ow * oh;
+      if (nh > canvas.height) {
+        console.log("uh oh.");
+      }
+    }
+
+    // use center point
+    var x = ((canvas.getWidth() - nw)/ 2)  + (nw/2);
+    var y = ((canvas.getHeight() - nh)/ 2) + (nh/2); 
+
+    img.set({width: nw, height: nh, left: x, top: y});
+
+    this.newimgl = x;
+    this.newimgt = y;
+};
+
+//
+// Resize/relocated image according to current canvas size.
+//
+EnhancedCanvas.prototype.resizeImageFlipped = function () {
+    var canvas = this.canvas;
+    var img = this.currentImage;
+
+    // the picture has been rotated sideways
+    // flip w and h
+    // because we compare height of image to width of canvas, etc.
+    var ow = this.imgh;
+    var oh = this.imgw;
+
+    // scale to fit
+    var nh = canvas.height;
+    var nw = nh/oh * ow;
+    if (nw > canvas.width) {
+      nw = canvas.width;
+      nh = nw/ow * oh;
+      if (nh > canvas.height) {
+        console.log("uh oh.");
+      }
+    }
+
+    // Use center point as anchor.
+    var x = ((canvas.getWidth() - nw)/ 2)  + (nw/2);
+    var y = ((canvas.getHeight() - nh)/ 2) + (nh/2); 
+
+    // we resize the image to fit the canvas,
+    // since it's on its side, calculated nh -> new width, etc.
+    img.set({width: nh, height: nw, left: x, top: y});
+
+    this.newimgl = x;
+    this.newimgt = y;  
+};
+
+EnhancedCanvas.prototype.onMagnify = function () {
+  var canvas = this.canvas;
+  var img = this.currentImage;
+  var scale = img.scaleX;
+
+  // if reached limit then do not magnify bigger
+  // else magnify by one step.
+  if (scale < 4) {
+    this.magnifyMode = true;
+    scale++;
+    img.scaleX = scale;
+    img.scaleY = scale;
+    canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+  }
+};
+
+EnhancedCanvas.prototype.onDeMagnify = function () {
+  var canvas = this.canvas;
+  var img = this.currentImage;
+  var scale = img.scaleX;
+
+  // if reached limit then do not demagnify
+  // else demagnify by one step.
+  if (scale > 1) {
+    scale--;
+    img.scaleX = scale;
+    img.scaleY = scale;
+    if (scale === 1) {
+        img.set({left: this.newimgl, top: this.newimgt});
+        this.magnifyMode = false;
+    }
+    canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+  }
+};
+
+EnhancedCanvas.prototype.onSliderRotateCCW = function () {
+  var canvas = this.canvas;
+  var img = this.currentImage;
+  var angle = img.angle;
+
+  angle -= 90;
+  if (angle === -90) {
+    angle = 270;
+  }
+  img.angle = angle;
+
+  if (angle === 90 || angle === 270) { // w and h flip
+   this.resizeImageFlipped();
+  }
+  else {
+    this.resizeImage();
+  }
+
+  canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+};
+
+EnhancedCanvas.prototype.onSliderRotateCW = function () {
+  var canvas = this.canvas;
+  var img = this.currentImage;
+  var angle = img.angle;
+
+  angle += 90;
+  if (angle === 360) {
+    angle = 0;
+  }
+  img.angle = angle;
+
+  if (angle === 90 || angle === 270) { // w and h flip
+   this.resizeImageFlipped();
+  }
+  else {
+    this.resizeImage();
+  }
+
+  canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+};
+
+<!-- =================================================================================== -->
+
+function handleWindowResize() {
+    // we must rescale
+    var nh = $(window).height();// can't use container1 because it's height is small for some reason
+    var nw = $('#container1').width();
+
+    // scale the canvas.
+    // TODO: calc height of controls on top
+    nh = nh - ControlsH;
+    
+    c1.resize(nw, nh);
+}
+
+function hookupToolBarEvents() {
+  var selector = 'a.canvas-tool';
+  $(selector).on("click", function(e) {
+      
+      e.preventDefault();
+      
+      var a = $(this).attr("data-action");
+      
+      if ("color" == a) {
+        var t = $(this).attr("data-color");
+        c1.canvas.freeDrawingBrush.color = t;
+        c2.canvas.freeDrawingBrush.color = t;
+      }
+            
+      if ("brushsize" == a) {
+        c1.canvas.freeDrawingBrush.width = parseInt($(this).attr("data-size"), 10) || 1;
+        c2.canvas.freeDrawingBrush.width = parseInt($(this).attr("data-size"), 10) || 1;
+      }
+  });
+
+  $('#container1 > div.canvas-tools > div:nth-child(1) > a.canvas-tool.clear').on("click", function(e) {
+        c1.canvas.clear();
+        c1.canvas.renderAll();
+  });
+
+  $('#container2 > div.canvas-tools > div:nth-child(1) > a.canvas-tool.clear').on("click", function(e) {
+        c2.canvas.clear();
+        c2.canvas.renderAll();
+  });
+}
+
+$(document).ready( 
+    function (){
+      firstUrl = "<%= firstUrl %>";
+
+      w = $('#container1').width();
+      h = $(window).height(); // Hack: we need an initial height before the image is loaded, which would cause the canvas to be sized properly. Can't use container height.
+      // TODO: dynamically calc height of controls on top
+      h = h - ControlsH; // minus height of controls on top
+
+      c1 = new EnhancedCanvas('c1', w, h,'magnify_range','rotate_range', 'container1', 'spinner-wrapper1');
+
+      // Check for new submissions every 1 second
+      downloadSubmissions();
+      setInterval(function(){ downloadSubmissions(); }, 1000);
+      
+      hookupToolBarEvents();      
+});
+
+$(window).resize(handleWindowResize);
+
+</script>

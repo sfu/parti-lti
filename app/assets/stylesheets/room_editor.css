@@ -1,0 +1,9 @@
+form.edit_room div {
+    margin: 1em 0;
+}
+
+#edit_room_submit {
+    visibility: hidden;
+    width: inherit;
+    padding: 0.25em 0.5em;
+}

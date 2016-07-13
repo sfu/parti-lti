@@ -1,0 +1,1 @@
+class Teacher < Participant; end

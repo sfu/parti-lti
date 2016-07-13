@@ -1,0 +1,26 @@
+<%
+   @title = 'List Participants'
+%>
+
+<meta http-equiv="refresh" content="5">
+
+<div>(Current Time: <%= Time.now %>)</div>
+<div>
+<%
+	@sg_keys.each do |k|
+%>
+	<div style="margin: 10px; float: left;"><h1><%= k %></h1><br>
+	<ul>
+<%		
+		@sorted_groups[k].each do |name|
+%>
+			<li><%= name %>	</li>
+<%
+		end
+%>
+	</ul></div>
+<%
+	end
+%>
+</div>
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100px" height="100px"
+	 viewBox="346 562 100 100" enable-background="new 346 562 100 100" xml:space="preserve">
+<g>
+	<g>
+		<g>
+			<path fill="#ADFDFE" d="M396,639.093c-24.978,0-44.639-26.34-44.639-26.34c-0.324-0.41-0.324-1.09,0-1.506
+				c0,0,19.662-26.34,44.639-26.34s44.639,26.34,44.639,26.34c0.324,0.41,0.325,1.09,0,1.506
+				C440.639,612.753,420.978,639.093,396,639.093z M396,628.256c9.367,0,16.96-7.278,16.96-16.256s-7.593-16.255-16.96-16.255
+				c-9.367,0-16.96,7.278-16.96,16.255S386.633,628.256,396,628.256z"/>
+			<path fill="#ADFDFE" d="M396,617.418c3.122,0,5.653-2.426,5.653-5.418c0-2.993-2.531-5.418-5.653-5.418s-5.653,2.426-5.653,5.418
+				C390.347,614.992,392.878,617.418,396,617.418z"/>
+		</g>
+	</g>
+</g>
+</svg>

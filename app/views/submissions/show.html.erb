@@ -1,0 +1,8 @@
+<%
+   @title = 'Your Submission'
+   @show_back_link = false if @submission.participant.student?
+%>
+
+<%= image_tag @submission.image(:medium) %>
+<br>
+<%= button_to 'Back to image upload page', new_room_submission_path, :class => "button", :method => :get, :style => "#{'display:none;' unless @room.open}"  %>

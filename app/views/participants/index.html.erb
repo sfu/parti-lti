@@ -1,0 +1,80 @@
+<%
+   @title = 'Gradebook'
+%>
+
+<%= stylesheet_link_tag 'participants' %>
+
+<ul class="nav">
+  <li><%= link_to 'Export submissions', room_submissions_export_path(@room) %></li>
+  <li><%= link_to 'Update roster', room_import_participants_path(@room), id: 'btn-import_participants' %></li>
+</ul>
+
+<h2>Students</h2>
+
+<h3>Export Grades</h3>
+<% if @room.can_passback_grades? %>
+    <p>Grades can be exported to the graded resource associated with this room.</p>
+    <div id="container-export_all" class="actions"></div>
+<% else %>
+    <p>This feature is not available because this room was not associated with a graded resource.</p>
+<% end %>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Submitted?</th>
+    <th>Rating</th>
+    <th>Grade</th>
+    <% if @room.can_passback_grades? %>
+        <th>Export grade</th>
+    <% end %>
+  </tr>
+  <% @room.students.each do |student| %>
+
+      <% submission = student.active_submission %>
+      <% has_rating = submission && submission.has_rating? %>
+
+      <tr>
+        <td><%= student.user.full_name %></td>
+        <td><%= submission ? 'Yes' : 'No' %></td>
+        <td><%= has_rating ? "#{submission.rating} / #{@room.max_rating}" : '--' %></td>
+        <td><%= has_rating ? number_to_percentage(submission.normalized_rating * 100, precision: 0) : '--' %></td>
+        <% if @room.can_passback_grades? %>
+            <td>
+              <% if student.can_passback_grade? %>
+                  <span class="action-export"><%= link_to 'Export', passback_grade_path(id: student.id) %></span>
+              <% else %>
+                  n/a
+              <% end %>
+            </td>
+        <% end %>
+      </tr>
+
+  <% end %>
+</table>
+
+<h2>Teachers</h2>
+
+<% if @room.teachers.any? %>
+    <ul class="participants">
+      <% @room.teachers.each do |p| %>
+          <li><%= p.user.full_name %></li>
+      <% end %>
+    </ul>
+<% else %>
+    <p>There are no teachers.</p>
+<% end %>
+
+<h2>Moderators</h2>
+
+<% if @room.moderators.any? %>
+    <ul class="participants">
+      <% @room.moderators.each do |p| %>
+          <li><%= p.user.full_name %></li>
+      <% end %>
+    </ul>
+<% else %>
+    <p>There are no moderators.</p>
+<% end %>
+
+<%= javascript_include_tag 'participants' %>

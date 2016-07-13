@@ -1,0 +1,26 @@
+<%
+   @title = 'Import/Update Roster'
+%>
+
+<p>Parti has obtained and processed the following users:</p>
+
+<h2>Added (<%= @added.count %>)</h2>
+<ul>
+  <% @added.each do |user| %>
+      <li><%= user.last_name %>, <%= user.first_name %> (<%= user.email %>)</li>
+  <% end %>
+</ul>
+
+<h2>Unchanged (<%= @unchanged.count %>)</h2>
+<ul>
+  <% @unchanged.each do |user| %>
+      <li><%= user.last_name %>, <%= user.first_name %> (<%= user.email %>)</li>
+  <% end %>
+</ul>
+
+<h2>Skipped (<%= @skipped.count %>)</h2>
+<ul>
+  <% @skipped.each do |enrollment| %>
+      <li><%= enrollment['user']['name'] %></li>
+  <% end %>
+</ul>

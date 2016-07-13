@@ -1,0 +1,29 @@
+@import 'config';
+
+div.actions {
+
+  input[type="submit"], button {
+    display: block;
+    margin: 0.25em 0;
+  }
+
+}
+
+#preview {
+  display: none;
+  margin: 1em 0;
+
+  img {
+    height: 190px;
+  }
+}
+
+@media (min-width: $breakpoint-narrow) {
+
+  div.actions {
+    overflow: auto;
+    input[type="submit"] { float: right; }
+    button { float: left; }
+  }
+
+}

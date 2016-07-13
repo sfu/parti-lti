@@ -1,0 +1,1083 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.5.0/fabric.min.js" ></script>
+<script src="https://fgnass.github.io/spin.js/spin.min.js" ></script>
+
+<style>
+*,*::after,*::before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+
+canvas {height:auto;width:auto;max-width:100%;margin:0}
+
+#spinner-wrapper1, #spinner-wrapper2 {
+  background-color: black;
+  opacity: 1;
+  position: absolute;
+  left:50%;
+  top:50%;
+  width: 100px;
+  height: 100px;
+  margin: -50px 0 0 -50px;
+  border-radius: 10px;
+}
+
+      /* 
+        Parti Stylesheet - Aug 2015v1r1
+        Care of Andrew Leung, Brian Hermkens, Andrew Hawryshkewich
+
+        Below you will find the styling for the Parti system along with some
+        samples of the rendered elements.
+
+        v1r1: Added in the sample markup UI;
+        v1: Initial styling of all elements;
+      */
+
+      *, *::after, *::before {
+        box-sizing: border-box;
+      }
+
+      html {
+        font-family: Verdana, Arial, sans-serif;
+        text-align: left;
+      }
+
+      h1 {
+        margin: 1em 0 0.35em;
+        font-size: 2.5em;
+        font-weight: normal;
+      }
+
+      h2 {
+        margin: 1em 0 0.25em;
+        font-size: 1.75em;
+      }
+
+      h3 {
+        margin: 1em 0 0.15em;
+        font-size: 1em;
+      }
+
+      a {
+        color: #34A5A6;
+      }
+
+
+      a:hover, a:focus, a.hover {
+        color: #153C6B;
+        text-decoration: none;
+      }
+
+      a.button, div.button {
+        display: inline-block;
+        font-size: 1em;
+        margin: 0.25em 0.25em 0 0;
+        padding: 0.5em 0.7em;
+        color: white;
+        background: #34A5A6;
+        text-decoration: none;
+        -webkit-transition: background-color 0.35s ease-out;
+        transition: background-color 0.35s ease-out;
+      }
+
+      a.button:hover, a.button:focus, div.button:hover, div.button:focus, .rating-bar:hover, .rating-bar:focus {
+        background-color: #153C6B;
+      }
+
+      a.button.processing {
+        background: #B24A95;
+        -webkit-animation-name: pulse;
+        -webkit-animation-duration: 0.85s;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-easing: linear;
+        -webkit-animation-direction: alternate;
+        animation-name: pulse;
+        animation-duration: 0.85s;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+      }
+
+      a.button.inactive {
+        background: #EEE;
+        color: #888;
+      }
+
+      a.button.icon, div.button.icon {
+        padding: 0.1em 0.25em 0;
+      }
+
+      a.button.icon img {
+        height: 2.5em;
+        width: 2.5em;
+      }
+
+      a.button .arrow {
+        font-size: 0.8em;
+        position: relative;
+        top: -0.1em;
+        margin-left: 0.5em;
+      }
+
+      a.button.text-control {
+        height: 2.8295em;
+        padding: 0.7em 0.9em;
+      }
+
+
+      .colour-bar .button, .size-bar .button, .viewing-bar .button {
+        margin-right: 0;
+      }
+
+      .colour-bar, .size-bar, .viewing-bar {
+        float: left;
+      }
+
+      .colour-control.colour-black {
+        background-color: #000;
+      }
+
+      .colour-control.colour-black:hover, .colour-control.colour-black:focus {
+        background-color: #000;
+        opacity: 0.4;
+      }
+
+      .colour-control.colour-yellow {
+        background-color: #D9CB28;
+      }
+
+      .colour-control.colour-yellow:hover, .colour-control.colour-yellow:focus {
+        background-color: #D9CB28;
+        opacity: 0.4;
+      }
+
+      .colour-control.colour-red {
+        background-color: #E11912;
+      }
+
+      .colour-control.colour-red:hover, .colour-control.colour-red:focus {
+        background-color: #E11912;
+        opacity: 0.4;
+      }
+
+      .colour-control.colour-blue {
+        background-color: #3A2DB1;
+      }
+
+      .colour-control.colour-blue:hover, .colour-control.colour-blue:focus {
+        background-color: #3A2DB1;
+        opacity: 0.4;
+      }
+
+      .colour-control.colour-green {
+        background-color: #358523;
+      }
+
+      .colour-control.colour-green:hover, .colour-control.colour-green:focus {
+        background-color: #358523;
+        opacity: 0.4;
+      }
+
+      a.button.colour-control {
+        height: 2.8295em;
+        width: 2.8295em;
+      }
+
+
+      ul.links {
+        list-style-type: none;
+        margin: 0.75em 0;
+        padding: 0;
+      }
+
+      p {
+        font-size: 1em;
+        line-height: 1.35em;
+        max-width: 33em;
+      }
+
+      select {
+        font-size: 1em;
+      }
+
+      hr {
+        margin: 1.5em 0;
+        border: none;
+        border-top: 0.1em solid #CCC;
+        width: 90%;
+      }
+
+      table {
+        margin: 1em 0;
+        padding: 0;
+      }
+
+      th {
+        font-size: 1em;
+        text-align: left;
+        background-color: #EEE;
+      }
+
+      th, td {
+        margin: 0 0.25em 0 0;
+        padding: 0.25em 1em 0.1em 0.25em;
+      }
+
+      .status {
+        padding: 0.5em;
+        background: #EEE;
+        border-left: 0.4em solid #34A5A6;
+      }
+
+      .status.error {
+        border-left-color: #D93D2F;
+      }
+
+      .rating-bar {
+        background-color: #34A5A6;
+        display: inline-block;
+        padding: 0.1em 0.25em 0;
+        margin: 0.25em 0.25em 0 0;
+        -webkit-transition: background-color 0.35s ease-out, opacity 0.35s ease-out;
+        transition: background-color 0.35s ease-out, opacity 0.35s ease-out;
+      }
+
+      .rating input, .rating-zero input, .toggle input { 
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        opacity: 0;
+        display: inline-block;
+        width: 25%;
+        height: 100%; 
+        margin: 0;
+        padding: 0;
+        z-index: 2;
+        position: relative;
+        -webkit-transition: opacity 0.35s ease-out;
+        transition: opacity 0.35s ease-out;
+      }
+
+      .rating-zero input, .toggle input {
+        width: 100%;
+      }
+
+      .rating input:hover, .rating input:focus, .rating-zero input:hover, .rating-zero input:focus, .toggle input:hover, .toggle input:focus {
+        cursor: pointer;
+        background-image: none;
+      }
+
+      .rating input:hover+i, .rating input:checked+i, .rating-zero input:hover+i, .rating-zero input:checked+i, .toggle input:hover+i, .toggle input:checked+i {
+        opacity: 1;
+      }
+
+      .rating i~i {
+        width: 50%;
+      }
+
+      .rating i~i~i {
+        width: 75%;
+      }
+    
+      .rating i~i~i~i {
+        width: 100%;
+      }
+
+      .toggle {
+        white-space: nowrap;
+        display: inline-block;
+        width: 2.5em;
+        height: 2.5em;
+        overflow: hidden;
+        position: relative;
+        right: 0;
+        background-size: contain;
+      }
+
+      .toggle i {
+        opacity: 0;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+        background-size: contain;
+      }
+
+
+      .toggle.flag {
+        background-image: url('/submissions/flag-mask.svg');
+      }
+
+      .toggle.flag i {
+        background-image: url('/submissions/flag.svg');
+      }
+      
+      .toggle.star {
+        background-image: url('/submissions/star-mask.svg');
+      }
+
+      .toggle.star i {
+        background-image: url('/submissions/star.svg');
+      }
+
+      .toggle.zoom input:checked+i {
+        opacity: 1;
+        background-image: url('/submissions/zoom-enabled.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      .toggle.zoom input:not(:checked)+i {
+        opacity: 1;
+        background-image: url('/submissions/zoom-disabled.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      .toggle.visibility input:checked+i {
+        opacity: 1;
+        background-image: url('/submissions/eye-open.svg');
+      }
+
+      .toggle.visibility input:not(:checked)+i {
+        opacity: 1;
+        background-image: url('/submissions/eye-closed.svg');
+      }
+
+      .toggle.split-screen input:checked+i {
+        opacity: 1;
+        background-image: url('/submissions/split-screen.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      .toggle.split-screen input:not(:checked)+i {
+        opacity: 1;
+        background-image: url('/submissions/split-screen-mask.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+
+      .ui .button, .ui .rating-bar {
+        float: left;
+      }
+
+      .ui .sibling {
+        margin-right: 0;
+      }
+
+      .ui .spacer {
+        margin-right: 1em;
+      }
+
+      .ui::after {
+        content: " ";
+        display: block;
+        clear: both;
+      }
+
+
+      @-webkit-keyframes pulse {
+        0% { background-color: #34A5A6; }
+        100% { background-color: #EF52AC; }
+      }
+
+      @keyframes pulse {
+        0% { background-color: #34A5A6; }
+        100% { background-color: #EF52AC; }
+      }
+</style>
+
+<%
+  # This is meant to be a standalone page that opens in a new window
+  @show_top_nav = false
+
+  # Remove multiple submissions from the list.
+  # ensure no participant has multiple submissions
+  uniq_hash = {}
+  @room.submissions.each do |s|
+    if uniq_hash[s.participant_id].nil?
+      uniq_hash[s.participant_id] = s
+    else
+      if s.created_at > uniq_hash[s.participant_id].created_at
+        uniq_hash[s.participant_id] = s
+      end
+    end
+  end
+
+  submissions = []
+  uniq_hash.each do |k,v|
+    submissions << v if v.show #plus filter out non-show submissions
+  end
+
+  # Bump starred submissions to the head of the list and surround them with a green border.
+  # Starred submissions appear first, sorted by submitter id.
+  sorted_submissions = submissions.sort do |a, b| 
+    avalue = a.starred ? 1 : 0
+    bvalue = b.starred ? 1 : 0
+    c = bvalue - avalue # starred submissions (=1) first, so reverse normal sort order
+    if c == 0
+      c = a.id - b.id # subsort in order of submission id
+    end
+    c
+  end
+
+  # Guard against no pics selected for display.
+  firstUrl = ""
+  if sorted_submissions.count > 0
+    firstUrl = sorted_submissions[0].image.url(:original) 
+  end
+%>
+
+<!-- =================================================================================== -->
+
+<div id="cc1" style="width: 100%; text-align: center;">
+
+<div id="container1" style="margin: auto;">  
+  
+  <canvas id="c1"></canvas>
+  
+  <div class="canvas-tools">
+        <div class="ui" style="margin-bottom: 4px; margin-left: 4px;">
+          <div class="colour-bar spacer">
+            <a href="#" class="button colour-control colour-black canvas-tool" data-action="color" data-color="#000000">&nbsp;</a>
+            <a href="#" class="button colour-control colour-yellow canvas-tool" data-action="color" data-color="#D9CB28">&nbsp;</a>
+            <a href="#" class="button colour-control colour-red canvas-tool" data-action="color" data-color="#E11912">&nbsp;</a>
+            <a href="#" class="button colour-control colour-green canvas-tool" data-action="color" data-color="#358523">&nbsp;</a>
+            <a href="#" class="button colour-control colour-blue canvas-tool" data-action="color" data-color="#3A2DB1">&nbsp;</a>
+          </div>
+
+
+          <div class="size-bar spacer">
+            <a href="#" class="button text-control stroke-width canvas-tool" data-action="brushsize" data-size="1">1</a>
+            <a href="#" class="button text-control stroke-width canvas-tool" data-action="brushsize" data-size="5">5</a>
+            <a href="#" class="button text-control stroke-width canvas-tool" data-action="brushsize" data-size="10">10</a>
+          </div>
+
+          <div class="viewing-bar spacer">
+            <a href="#" class="button icon sibling canvas-tool" data-action="rotate1ccw">
+              <img src="/submissions/rotate-left.svg" alt="Rotate left">
+            </a>
+            <a href="#" class="button icon canvas-tool" data-action="rotate1cw">
+              <img src="/submissions/rotate-right.svg" alt="Rotate right">
+            </a>
+
+            <div class="button icon">
+              <span class="toggle zoom">
+                <input type="checkbox" name="zoom" class="canvas-tool" id="magnify1_img" data-action="magnify1" value="yes"><i></i>
+              </span>
+            </div>
+
+
+            <div class="button icon">
+              <span class="toggle split-screen">
+                <input type="checkbox" name="split-screen" class="canvas-tool" data-action="dual" value="yes"><i></i>
+              </span>
+            </div>
+
+
+            <a href="#" class="button icon canvas-tool" data-action="clear">
+              <img src="/submissions/clear.svg" alt="Clear">
+            </a>
+          </div>
+        </div>
+      <div style="margin-bottom: 0px; border: 1px solid black; height:230px; overflow-x:scroll; white-space:nowrap;">
+          <%
+            sorted_submissions.each do |s|
+              if s.show
+                if s.starred
+          %>
+              <span style="display:inline-block; height:200px">
+              <img src="<%= s.image.url(:medium) %>" onClick="c1.loadImage('<%= s.image.url(:original)%>');" style="height:inherit; margin:auto; border: dotted blue 2px;" /></span>
+
+          <%
+                else
+          %>
+              <span style="display:inline-block; height:200px">
+              <img src="<%= s.image.url(:medium) %>" onClick="c1.loadImage('<%= s.image.url(:original)%>');" style="height:inherit; margin:auto;" /></span>
+          <%
+                end
+              end
+            end
+          %>
+      </div>
+  </div>
+</div> <!-- container1 -->
+</div> <!-- cc1 -->
+
+<!-- =================================================================================== -->
+
+<div id="cc2" style="width:50%; text-align: center; display:none; float:left;">
+<div id="container2" style="margin: auto; border-left: 1px solid black;">
+  <canvas id="c2" ></canvas>      
+  <div class="canvas-tools">
+    <div class="ui" style="margin-bottom: 4px; margin-left: 4px;">
+          <div class="viewing-bar spacer">
+            <a href="#" class="button icon sibling canvas-tool" data-action="rotate2ccw">
+              <img src="/submissions/rotate-left.svg" alt="Rotate left">
+            </a>
+            <a href="#" class="button icon canvas-tool" data-action="rotate2cw">
+              <img src="/submissions/rotate-right.svg" alt="Rotate right">
+            </a>
+
+            <div class="button icon">
+              <span class="toggle zoom">
+                <input type="checkbox" name="zoom" class="canvas-tool" id="magnify2_img" data-action="magnify2" value="yes"><i></i>
+              </span>
+            </div>
+
+            <a href="#" class="button icon canvas-tool" data-action="clear">
+              <img src="/submissions/clear.svg" alt="Clear">
+            </a>
+          </div>
+    </div>
+      <div style="margin-bottom: 0px; border: 1px solid black; height:230px; overflow-x:scroll; white-space:nowrap;">
+          <%
+            sorted_submissions.each do |s|
+              if s.show
+                if s.starred
+          %>
+              <span style="display:inline-block; height:200px">
+              <img src="<%= s.image.url(:medium) %>" onClick="c2.loadImage('<%= s.image.url(:original)%>');" style="height:inherit; margin:auto; border: dotted blue 2px;" />
+              </span>
+          <%
+                else
+          %>
+              <span style="display:inline-block; height:200px">
+              <img src="<%= s.image.url(:medium) %>" onClick="c2.loadImage('<%= s.image.url(:original)%>');" style="height:inherit; margin:auto;" />
+              </span>
+          <%
+                end
+              end
+            end
+          %>
+      </div>
+  </div>
+</div>
+</div> <!-- cc2 -->
+
+<!-- =================================================================================== -->
+
+<script>
+
+//
+// Class EnhancedCanvas
+// wraps the Fabric JS object and Carousel UI.
+//
+
+//
+// Constructor function.
+//
+function EnhancedCanvas(canvasid, w, h, magnifyid, rotateid, containerid, spinnerid) {
+  var self = this;
+  self.canvasid = canvasid;
+  self.spinnerid = spinnerid;
+
+  // set available area:
+  // used for special case when loading a new image that best
+  // fits a space and thus allow the re-allocation of a larger canvas.
+  self.setAvail(w, h);
+
+  self.currentImage = null;
+  
+  // canvas object
+  self.canvas = new fabric.Canvas(canvasid, {
+    isDrawingMode: true
+  });
+  self.canvas.setWidth(w);
+  self.canvas.setHeight(h);
+  self.canvas.freeDrawingBrush.color = "#FFFF00";
+  self.canvas.freeDrawingBrush.width = 5;
+  self.canvas.selection = false;
+
+  self.magnifyImg = $('#' + magnifyid + '_img')[0];
+  
+  self.rotateRange = $('#' + rotateid);
+
+  // Magnifier View
+  var magnifyid = canvasid + '_magnify';
+  var magnifydivid = magnifyid + '_div';
+  $('#' + containerid + ' > div.canvas-container').append("<div id='overlay-" + self.spinnerid + "'><div id='" + self.spinnerid + "'></div></div><div id='" + magnifydivid + "' style='display: none; position: absolute; top: 0; left: 0; border: 1px solid black;''><canvas id='" + magnifyid + "'></canvas></div>");
+  
+  self.magnifydivid = magnifydivid;
+  self.magnify = new fabric.Canvas(magnifyid, {
+    isDrawingMode: false,
+    selection: false,
+    backgroundColor: 'white',
+    opacity: 1.0
+  });
+  
+  // Init. magnifier properties.
+  self.magnify.mouseDown = false;
+  self.magnify.selection = false;
+  self.magnify.setWidth(self.canvas.width * 0.25);
+  self.magnify.setHeight(self.canvas.height * 0.25);
+  
+  var ratio = 0.25;
+  var rect_height = self.magnify.height * ratio;
+  var rect_width = self.magnify.width * ratio;
+
+  self.magnify.rectangle = new fabric.Rect({
+    left: self.magnify.width/2,
+    top: self.magnify.height/2,
+    width: rect_width,
+    height: rect_height,
+    selectable: false,
+    fill: 'transparent',
+    stroke: "rgb(0,0,0)",
+    strokeWidth: 1,
+    originX: "center",
+    originY: "center"
+  });
+  this.magnify.add(this.magnify.rectangle);
+
+  // events to support magnification
+  self.magnify.on('mouse:down', function(options) {
+    self.mouseX = options.e.clientX;
+    self.mouseY = options.e.clientY;
+    self.mouseDown = true;
+  });
+
+  self.magnify.on('mouse:up', function(options) {
+    self.mouseDown = false;
+  });
+
+  self.magnify.on('mouse:move', function(options) {
+    if (!(self.mouseDown)) {
+      return;
+    }
+    
+    var deltaX = -1 * (options.e.clientX - self.mouseX);
+    self.mouseX = options.e.clientX;
+    var deltaY = -1 * (options.e.clientY - self.mouseY);
+    self.mouseY = options.e.clientY;
+
+    // Move around rectangle.    
+    var newx = this.rectangle.left + (-1 * deltaX);
+    var newy = this.rectangle.top + (-1 * deltaY);
+    
+    // Test new rectangle location bounds in magnifier view.
+    var ratio = 0.25;
+    var rect_radius_w = this.width * ratio / 2;
+    var rect_radius_h = this.height * ratio / 2;
+    
+    if (newx - rect_radius_w >= 0 && (newx + rect_radius_w) < this.width &&
+        newy - rect_radius_h >= 0 && (newy + rect_radius_h) < this.height) 
+    {
+      // update magnifier rectangle and update magnifier view
+      this.rectangle.set({left: newx, top: newy});
+      this.renderAll();
+      // update main image and update main canvas view
+      var inv_ratio = 2 * 4 * 2;
+      self.currentImage.set({left: self.currentImage.left +  inv_ratio * deltaX, top: self.currentImage.top + inv_ratio * deltaY});
+      self.canvas.setBackgroundImage(self.currentImage, self.canvas.renderAll.bind(self.canvas));  
+    }
+  });
+}
+
+EnhancedCanvas.prototype.setAvail = function (w,h) {
+  this.availW = w;
+  this.availH = h;
+};
+
+//
+// Handle a resize event. W and H of new size is passed in.
+//
+EnhancedCanvas.prototype.resize = function (nw, nh) {  
+  // just resize the canvas to fit this size
+  // then readd the img back with a proper scale to fit.
+
+  img = this.currentImage;
+  canvas = this.canvas;
+
+  canvas.backgroundImage = 0; // remove background image, see http://stackoverflow.com/questions/14171378/fabricjs-delete-backgroundimage
+  canvas.clear();
+
+  // Resize canvas view.
+  canvas.setWidth(nw);
+  canvas.setHeight(nh);
+
+  // Resize magnifier view.
+  this.magnify.setWidth(canvas.width * 0.25);
+  this.magnify.setHeight(canvas.height * 0.25);
+      
+  var ratio = 0.25;
+  var rect_height = this.magnify.height * ratio;
+  var rect_width = this.magnify.width * ratio;
+
+  this.magnify.remove(this.magnify.rectangle);
+
+  this.magnify.rectangle = new fabric.Rect({
+        left: this.magnify.width/2,
+        top: this.magnify.height/2,
+        width: rect_width,
+        height: rect_height,
+        selectable: false,
+        fill: 'transparent',
+        stroke: "rgb(0,0,0)",
+        strokeWidth: 1,
+        originX: "center",
+        originY: "center"
+  });
+  this.magnify.add(this.magnify.rectangle);
+
+  if (img.angle === 90 || img.angle === 270) {
+    this.setImageSizeRotated(this.imgw, this.imgh, img);
+  }
+  else {
+    this.setImageSize(this.imgw, this.imgh, img);
+  }
+ 
+  canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+  this.setMagnifierImage(img);  
+};
+
+EnhancedCanvas.prototype.setMagnifierImage = function (img) {
+  // Delete old image.
+  this.magnify.remove(this.magnify.currentImage);
+  
+  // Set image in the magnifier view.
+  var img2 = fabric.util.object.clone(img);    
+  var scale = 0.25;
+  img2.scaleX = scale;
+  img2.scaleY = scale;
+  img2.set({left: (this.magnify.width/2), top: (this.magnify.height/2)});
+  this.magnify.setBackgroundImage(img2, this.magnify.renderAll.bind(this.magnify));
+  this.magnify.currentImage = img2;
+
+  // Reset the magnifier rectangle.
+  this.magnify.rectangle.set({left: this.magnify.width/2, top: this.magnify.height/2});
+  this.magnify.renderAll();
+};
+
+EnhancedCanvas.prototype.setImageSize = function (ow, oh, img) {
+    var self = this;
+    var canvas = self.canvas;
+
+    var nh = canvas.height;
+    var nw = nh/oh * ow;
+    if (nw > canvas.width) {
+      nw = canvas.width;
+      nh = nw/ow * oh;
+      if (nh > canvas.height) {
+        console.log("uh oh.");
+      }
+    }
+
+    // use center point
+    var x = ((canvas.getWidth() - nw)/ 2)  + (nw/2);
+    var y = ((canvas.getHeight() - nh)/ 2) + (nh/2); 
+    
+    img.set({width: nw, height: nh, left: x, top: y});
+    
+    self.newimgl = x;
+    self.newimgt = y;
+};
+
+EnhancedCanvas.prototype.setImageSizeRotated = function (w, h, img) {
+    var self = this;
+    var canvas = self.canvas;
+
+    // !!! flip w and h
+    var ow = h;
+    var oh = w;
+
+    var nh = canvas.height;
+    var nw = nh/oh * ow;
+    if (nw > canvas.width) {
+      nw = canvas.width;
+      nh = nw/ow * oh;
+      if (nh > canvas.height) {
+        console.log("uh oh.");
+      }
+    }
+
+    // use center point
+    var x = ((canvas.getWidth() - nw)/ 2)  + (nw/2);
+    var y = ((canvas.getHeight() - nh)/ 2) + (nh/2); 
+    
+    // !!! when referring back to the original image, we flip back (h->width, w->height)
+    img.set({width: nh, height: nw, left: x, top: y});
+    
+    self.newimgl = x;
+    self.newimgt = y;
+};
+
+//
+// Load image into canvas.
+// A click in the carousel loads a new image into the main view.
+// Along with the new image we want to resize the canvas to fit 
+// in the available space and then resize the newly loaded image
+// to fit in that space.
+//
+EnhancedCanvas.prototype.loadImage = function (imageUrl) {
+  var canvas = this.canvas;
+  var self = this; // to use in callback below where this === window
+  
+  var target = document.getElementById(self.spinnerid);
+  var spinner = new Spinner({lines: 12, color: "#fff"}).spin(target);
+  $('#overlay-' + self.spinnerid).show();
+
+  canvas.clear();
+  this.canvas.isDrawingMode = true;
+  this.magnifyMode = false;
+  
+  // reset the controls
+  // Reset the checkbox and its image will change automagically due to CSS.
+  self.magnifyImg.checked = false
+  self.rotateRange.val(0);
+  $('#' + self.magnifydivid).css('display','none');
+  
+  fabric.Image.fromURL(imageUrl, function(img) {// download image
+    spinner.stop();
+    $('#overlay-' + self.spinnerid).hide();
+
+    self.currentImage = img;
+    self.imgw = img.width;
+    self.imgh = img.height;
+
+    img.centeredRotation = true;
+    img.originX = "center";
+    img.originY = "center";
+
+    // set image as background of canvas
+    // scale to fit
+    var oh = img.height;
+    var ow = img.width;
+
+    self.setImageSize(ow, oh, img);
+
+    canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+
+    // Magnifier View
+    self.setMagnifierImage(img);
+  });
+};
+
+EnhancedCanvas.prototype.onMagnify = function () {
+  var self = this;
+  var canvas = this.canvas;
+  this.magnifyMode = !this.magnifyMode;
+
+  // Note: Change magnify icon - icon change is handled automatically by CSS rule plus checkbox.      
+  
+  if (!this.magnifyMode) { // turn off magnification
+    self.currentImage.set({left: self.newimgl, top: self.newimgt});
+    self.currentImage.scaleX = 1;
+    self.currentImage.scaleY = 1;
+    
+    canvas.setBackgroundImage(self.currentImage, canvas.renderAll.bind(canvas));
+
+    // reset the magnify rectangle
+    this.magnify.rectangle.set({left: this.magnify.width/2, top: this.magnify.height/2});
+    this.magnify.renderAll();
+
+    $('#' + self.magnifydivid).css('display','none');
+  }
+  else {
+    // Prevent any elements from being selected.
+    objs = canvas.getObjects();
+    for(i=0;i<objs.length;i++) {
+     objs[i].selectable = false;
+    }
+
+    self.currentImage.scaleX = 4;
+    self.currentImage.scaleY = 4;
+
+    canvas.setBackgroundImage(self.currentImage, canvas.renderAll.bind(canvas));
+
+    $('#' + self.magnifydivid).css('display','initial');
+  }
+};
+
+/*
+ * value is the change in angle (in degrees)
+ */
+EnhancedCanvas.prototype.onSliderRotate = function (value) {
+  var self = this;
+  var canvas = this.canvas;
+  var delta = parseInt(value);
+  var img = this.currentImage;
+
+  var newangle = this.currentImage.angle + delta;
+
+  if (newangle === -90) {
+    newangle = 270
+  }
+  else if (newangle === 360) {
+    newangle = 0
+  }
+
+  this.currentImage.angle = newangle;
+
+  if (newangle === 90 || newangle === 270) {    
+    this.setImageSizeRotated(this.imgw, this.imgh, img);
+    this.setMagnifierImage(img);
+  }
+  else {
+    this.setImageSize(this.imgw, this.imgh, img);
+    this.setMagnifierImage(img);
+  }
+
+  canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+};
+
+<!-- =================================================================================== -->
+// Global vars.
+
+// Area taken up by controls.
+var ControlsH = (2*21.44 + 15) + (198) + 29; 
+var DualMode = false; 
+
+function onMagnify(canvas) {
+  canvas.onMagnify();
+}
+
+function onSliderRotate(canvas, angle) {
+  canvas.onSliderRotate(angle);
+}
+
+function toggleDualMode() {
+  DualMode = !DualMode;
+
+  if (DualMode) {
+    // show 2nd display
+    $('#cc1').css('width', '50%');
+    $('#cc2').css('display','initial');
+    $('#cc1').css('float', 'left');
+
+    w = c1.availW/2;
+    h = c1.availH;
+    
+    c1.setAvail(w, h);
+    c2.setAvail(w, h);
+  }
+  else {
+    // hide 2nd display
+    $('#cc2').css('display', 'none');
+    $('#cc1').css('width', '100%');
+    $('#cc1').css('float', null);
+    
+    w = c1.availW * 2;// or set to window.getWidth();
+    h = c1.availH;
+
+    c1.setAvail(w, h);
+  }
+
+  // force a resize
+  handleWindowResize();
+}
+
+function handleWindowResize() {
+    // we must rescale
+    nh = $(window).height();// can't use container1 because it's height is small for some reason
+    nw = $('#container1').width();
+
+    // scale the canvas.
+    // TODO: calc height of controls on top
+    nh = nh - ControlsH;
+    
+    if (DualMode) {
+      c1.resize(nw - 1, nh); // because nw is the container not the window so don't div by 2
+      c2.resize(nw - 1, nh); 
+    }
+    else {
+      c1.resize(nw, nh);
+    } 
+}
+
+function hookupToolBarEvents() {
+  var selector = 'a.canvas-tool';
+  $(selector).on("click", function(e) {
+      
+      e.preventDefault();
+      
+      var a = $(this).attr("data-action");
+      
+      if ("color" == a) {
+        var t = $(this).attr("data-color");
+        c1.canvas.freeDrawingBrush.color = t;
+        c2.canvas.freeDrawingBrush.color = t;
+      }
+            
+      if ("brushsize" == a) {
+        c1.canvas.freeDrawingBrush.width = parseInt($(this).attr("data-size"), 10) || 1;
+        c2.canvas.freeDrawingBrush.width = parseInt($(this).attr("data-size"), 10) || 1;
+      }
+
+      if ("dual" === a) {
+        toggleDualMode();
+      }
+
+      if ("magnify1" === a) {
+        onMagnify(c1, 4);
+      }
+
+      if ("magnify2" === a) {
+        onMagnify(c2, 4); 
+      }
+
+      if ("rotate1cw" === a) {        
+        onSliderRotate(c1, 90);
+      }
+
+      if ("rotate1ccw" === a) {        
+        onSliderRotate(c1, -90);
+      }
+
+      if ("rotate2cw" === a) {        
+        onSliderRotate(c2, 90);
+      }
+
+      if ("rotate2ccw" === a) {        
+        onSliderRotate(c2, -90);
+      }
+  });
+
+  selector = 'input.canvas-tool';
+  $(selector).on("click", function(e) {  
+      var a = $(this).attr("data-action");
+      if ("magnify1" === a) {
+        onMagnify(c1, 4);
+      }
+      else if ("magnify2" === a) {
+        onMagnify(c2, 4);
+      }
+      else if ("dual" === a) {
+        toggleDualMode();
+      }
+  });
+
+  $('#container1 > div.canvas-tools > div.ui > div.viewing-bar.spacer > a.button.icon.canvas-tool > img').on("click", function(e) {
+        c1.canvas.clear();
+        c1.canvas.renderAll();
+  });
+
+
+  $('#container2 > div.canvas-tools > div.ui > div > a:nth-child(4) > img').on("click", function(e) {
+        c2.canvas.clear();
+        c2.canvas.renderAll();
+  });
+}
+
+$(document).ready( 
+    function (){
+      firstUrl = "<%= firstUrl %>";
+
+      w = $('#container1').width();
+      h = $(window).height(); // Hack: we need an initial height before the image is loaded, which would cause the canvas to be sized properly. Can't use container height.
+      
+      // TODO: dynamically calc height of controls on top
+      h = h - ControlsH; // minus height of controls on top
+
+      c1 = new EnhancedCanvas('c1', w, h, 'magnify1', 'rotate_range1','container1','spinner-wrapper1');
+      c1.loadImage(firstUrl);
+
+      // TODO: move this into dual-display function.
+      // display is hidden at first.
+      c2 = new EnhancedCanvas('c2', w, h, 'magnify2', 'rotate_range2','container2','spinner-wrapper2');
+      c2.loadImage(firstUrl);
+
+      hookupToolBarEvents();      
+});
+
+$(window).resize(handleWindowResize);
+
+</script>

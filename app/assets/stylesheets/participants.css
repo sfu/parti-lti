@@ -1,0 +1,24 @@
+.action-export:after {
+    padding-left: 8px;
+}
+.action-loading:after {
+    content: "\2026";
+    color: gray;
+}
+.action-successful:after {
+    content: "\2714";
+    color: #228B22;
+}
+.action-failed:after {
+    content: "\2716";
+    color: #BB0000;
+}
+
+ul.participants {
+    list-style: none;
+    padding-left: 0;
+}
+
+ul.participants li {
+    margin: 0.25em 0;
+}

@@ -1,0 +1,25 @@
+<%
+   @title = 'Access Token Required'
+%>
+
+<% if @token_invalid %>
+    <p>
+      <strong>The access token previously issued by Canvas was rejected.</strong> This could mean that the token has
+      expired or was deleted from your Canvas account. Either way, a new access token is needed.
+    </p>
+    <hr />
+<% end %>
+
+<p>
+  To import/update the roster, Parti needs to communicate with Canvas on behalf of you. Instead of asking for your
+  Canvas login credentials, Parti can request for something called an access token from Canvas.
+</p>
+<p>
+  If you would like to continue, you will be prompted by Canvas to grant Parti access to your Canvas account, by issuing
+  a new access token.
+</p>
+
+<div class="nav">
+  <%= link_to 'Cancel', @room %>
+  <%= link_to 'Continue', @redirect, class: 'primary' %>
+</div>
